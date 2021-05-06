@@ -216,7 +216,7 @@ namespace MSLIMA.Serializer
             return BitConverter.ToSingle(_bytes, 0);
         }
 
-        public static float DeserializeBool(byte[] bytes, ref int offset)
+        public static bool DeserializeBool(byte[] bytes, ref int offset)
         {
             byte[] _bytes = new byte[1];
             Array.Copy(bytes, offset, _bytes, 0, 1);
@@ -225,7 +225,7 @@ namespace MSLIMA.Serializer
                 Array.Reverse(_bytes);
 
             offset += 1;
-            return BitConverter.ToSingle(_bytes, 0);
+            return BitConverter.ToBoolean(_bytes, 0);
         }
 
         public static Vector3 DeserializeVector3(byte[] bytes, ref int offset)
@@ -300,7 +300,7 @@ namespace MSLIMA.Serializer
             o.x = BitConverter.ToSingle(_xBytes, 0);
             o.y = BitConverter.ToSingle(_yBytes, 0);
             o.z = BitConverter.ToSingle(_zBytes, 0);
-            o.z = BitConverter.ToSingle(_wBytes, 0);
+            o.w = BitConverter.ToSingle(_wBytes, 0);
 
             offset += 16;
             return o;
