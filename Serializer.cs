@@ -187,6 +187,124 @@ namespace MSLIMA.Serializer
             JoinBytes(ref bytes, lengthBytes, stringBytes);
         }
 
+        public static void Serialize(int[] values, ref byte[] bytes)
+        {
+            int length = values == null ? 0 : values.Length;
+            if (length > 0)
+            {
+                Serialize(length, ref bytes);
+                for (int i = 0; i < values.Length; i++)
+                {
+                    Serialize(values[i], ref bytes);
+                }
+            }
+            else
+            {
+                Serialize(0, ref bytes);
+            }
+        }
+
+        public static void Serialize(float[] values, ref byte[] bytes)
+        {
+            int length = values == null ? 0 : values.Length;
+            if (length > 0)
+            {
+                Serialize(length, ref bytes);
+                for (int i = 0; i < values.Length; i++)
+                {
+                    Serialize(values[i], ref bytes);
+                }
+            }
+            else
+            {
+                Serialize(0, ref bytes);
+            }
+        }
+
+        public static void Serialize(bool[] values, ref byte[] bytes)
+        {
+            int length = values == null ? 0 : values.Length;
+            if (length > 0)
+            {
+                Serialize(length, ref bytes);
+                for (int i = 0; i < values.Length; i++)
+                {
+                    Serialize(values[i], ref bytes);
+                }
+            }
+            else
+            {
+                Serialize(0, ref bytes);
+            }
+        }
+
+        public static void Serialize(Vector2[] values, ref byte[] bytes)
+        {
+            int length = values == null ? 0 : values.Length;
+            if (length > 0)
+            {
+                Serialize(length, ref bytes);
+                for (int i = 0; i < values.Length; i++)
+                {
+                    Serialize(values[i], ref bytes);
+                }
+            }
+            else
+            {
+                Serialize(0, ref bytes);
+            }
+        }
+
+        public static void Serialize(Vector3[] values, ref byte[] bytes)
+        {
+            int length = values == null ? 0 : values.Length;
+            if (length > 0)
+            {
+                Serialize(length, ref bytes);
+                for (int i = 0; i < values.Length; i++)
+                {
+                    Serialize(values[i], ref bytes);
+                }
+            }
+            else
+            {
+                Serialize(0, ref bytes);
+            }
+        }
+
+        public static void Serialize(Quaternion[] values, ref byte[] bytes)
+        {
+            int length = values == null ? 0 : values.Length;
+            if (length > 0)
+            {
+                Serialize(length, ref bytes);
+                for (int i = 0; i < values.Length; i++)
+                {
+                    Serialize(values[i], ref bytes);
+                }
+            }
+            else
+            {
+                Serialize(0, ref bytes);
+            }
+        }
+
+        public static void Serialize(string[] values, ref byte[] bytes)
+        {
+            int length = values == null ? 0 : values.Length;
+            if (length > 0)
+            {
+                Serialize(length, ref bytes);
+                for (int i = 0; i < values.Length; i++)
+                {
+                    Serialize(values[i], ref bytes);
+                }
+            }
+            else
+            {
+                Serialize(0, ref bytes);
+            }
+        }
         #endregion
 
         #region Deserialize
@@ -322,6 +440,125 @@ namespace MSLIMA.Serializer
             }
 
             return "";
+        }
+
+        public static int[] DeserializeIntArray(byte[] bytes, ref int offset)
+        {
+            int length = DeserializeInt(bytes, ref offset);
+            if (length > 0)
+            {
+                int[] array = new int[length];
+                for (int i = 0; i < array.Length; i++)
+                {
+                    array[i] = DeserializeInt(bytes, ref offset);
+                }
+
+                return array;
+            }
+
+            return new int[0];
+        }
+
+        public static float[] DeserializeFloatArray(byte[] bytes, ref int offset)
+        {
+            int length = DeserializeInt(bytes, ref offset);
+            if (length > 0)
+            {
+                float[] array = new float[length];
+                for (int i = 0; i < array.Length; i++)
+                {
+                    array[i] = DeserializeFloat(bytes, ref offset);
+                }
+
+                return array;
+            }
+
+            return new float[0];
+        }
+
+        public static bool[] DeserializeBoolArray(byte[] bytes, ref int offset)
+        {
+            int length = DeserializeInt(bytes, ref offset);
+            if (length > 0)
+            {
+                bool[] array = new bool[length];
+                for (int i = 0; i < array.Length; i++)
+                {
+                    array[i] = DeserializeBool(bytes, ref offset);
+                }
+
+                return array;
+            }
+
+            return new bool[0];
+        }
+
+        public static Vector3[] DeserializeVector3Array(byte[] bytes, ref int offset)
+        {
+            int length = DeserializeInt(bytes, ref offset);
+            if (length > 0)
+            {
+                Vector3[] array = new Vector3[length];
+                for (int i = 0; i < array.Length; i++)
+                {
+                    array[i] = DeserializeVector3(bytes, ref offset);
+                }
+
+                return array;
+            }
+
+            return new Vector3[0];
+        }
+
+        public static Vector2[] DeserializeVector2Array(byte[] bytes, ref int offset)
+        {
+            int length = DeserializeInt(bytes, ref offset);
+            if (length > 0)
+            {
+                Vector2[] array = new Vector2[length];
+                for (int i = 0; i < array.Length; i++)
+                {
+                    array[i] = DeserializeVector2(bytes, ref offset);
+                }
+
+                return array;
+            }
+
+            return new Vector2[0];
+        }
+
+        public static Quaternion[] DeserializeQuaternionArray(byte[] bytes, ref int offset)
+        {
+            int length = DeserializeInt(bytes, ref offset);
+            if (length > 0)
+            {
+                Quaternion[] array = new Quaternion[length];
+                for (int i = 0; i < array.Length; i++)
+                {
+                    array[i] = DeserializeQuaternion(bytes, ref offset);
+                }
+
+                return array;
+            }
+
+            return new Quaternion[0];
+        }
+
+        public static string[] DeserializeStringArray(byte[] bytes, ref int offset)
+        {
+            int length = DeserializeInt(bytes, ref offset);
+            if (length > 0)
+            {
+                string[] array = new string[length];
+                for (int i = 0; i < array.Length; i++)
+                {
+                    array[i] = DeserializeString(bytes, ref offset);
+                }
+
+                return array;
+            }
+
+            return new string[0];
         }
         #endregion
     }
