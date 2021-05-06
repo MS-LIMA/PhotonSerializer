@@ -124,12 +124,19 @@ This paper introduces custom serializer which can serialize custom type such as 
 |  Type | Size(bytes)  |
 | ------------ | ------------ |
 |  bool | 1 bytes  |
+|  bool[] | 4 + (1 * Length) bytes  |
 |  int | 4 bytes  |
+|  int[] | 4 + (4 * Length) bytes  |
 |  float | 4 bytes  |
+|  float[] | 4 + (4 * Length) bytes  |
 |  Vector2 | 8 bytes  |
+|  Vector2[] | 4 + (8 * Length) bytes  |
 |  Vector3 | 12 bytes  |
+|  Vector3[] | 4 + (12 * Length) bytes  |
 |  Quaternion | 16 bytes  |
-|  string | 4 bytes + α (UTF8 Encoding) |
+|  Quaternion[] | 4 + (16 * Length) bytes  |
+|  string | 4 + α (UTF8 Encoding) bytes |
+|  string[] | 4 + ((4 + α) * Length) bytes  |
 
 ### 2. How to Use
 First of all, declare using MSLIMA.Serializer above. 
