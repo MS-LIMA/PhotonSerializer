@@ -85,7 +85,7 @@ The result is as follows:
 |   |  size(bytes) |
 | ------------ | ------------ |
 | Original | 24 bytes  |
-|  Binary Formatter | 94 bytes  |
+|  JsonUtility & byte conversion | 94 bytes  |
 
 When the given structure is serialized with JsonUtility and converted to bytes, the size is 94 bytes which is about 4 times larger than the theoretical size. This size can be reduced by shortening the names of the variables. For instance, when the names of variables are changed as shown below, the result is as follows.
 
@@ -113,13 +113,13 @@ TestStruct testStruct = new TestStruct
 |   |  size(bytes) |
 | ------------ | ------------ |
 | Original | 24 bytes  |
-|  Binary Formatter | 67 bytes  |
+|  JsonUtility & byte conversion | 67 bytes  |
 
 The size of bytes are reduced from 94 bytes to 67 bytes. However, it is still larger than the theoritical size of 24 bytes.
 
 # III. Serialize with Custom Serializer
 ### 1. Introduce
-This paper introduces custom serializer. This serializer can provide a size that is close to the theoretical size. Serializable types and sizes are as follows:
+This paper introduces custom serializer which can serialize custom type such as user defined structure or class. This serializer can provide a size that is close to the theoretical size. Serializable types and sizes are as follows:
 
 |  Type | Size(bytes)  |
 | ------------ | ------------ |
@@ -132,7 +132,11 @@ This paper introduces custom serializer. This serializer can provide a size that
 |  string | 4 bytes + α (UTF8 Encoding) |
 
 ### 2. How to Use
-Suppose that the structure is given as follows:
+First of all, declare using MSLIMA.Serializer above. 
+
+`using MSLIMA.Serializer; `
+
+Then, Suppose that the structure is given as follows:
 
 ```csharp
 public struct TestStruct
@@ -166,20 +170,92 @@ TestStruct testStruct = new TestStruct
 
 First,  create static methods with the names "Serialize" and "Deserialize". "Serialize" method has one parameter with type of object and return type with type of byte[]. "Deserialize" method has one parameter with type of byte[] and return type of object.
 
-Note that the names of the methods, parameters and return types must be same as described.
+Note that the names of the methods, parameters and return types must be same as described. **In addition, these methods must be static.**
 
 ```csharp
-    public static byte[] Serialize(object customObject)
-    {
-    }
+public static byte[] Serialize(object customObject)
+{
+}
 ```
 
 ```csharp
+public static object Deserialize(byte[] bytes)
+{
+}
+```
+Second, cast customObject to custom type, declare byte array in "Serialize" method.
 
-    public static object Deserialize(byte[] bytes)
-    {
-    }
+```csharp
+public static byte[] Serialize(object customObject)
+{
+    TestStruct o = (TestStruct)customObject;
+    byte[] bytes = new byte[0];
+}
+```
+Now, use Serializer's method to serialize desired fields and return bytes at last. Note that byte array is passed with ref keyword.
+
+```csharp
+public static byte[] Serialize(object customObject)
+{
+	...
+    Serializer.Serialize(o.int_1, ref bytes);
+    Serializer.Serialize(o.int_2, ref bytes);
+    Serializer.Serialize(o.float_1, ref bytes);
+    Serializer.Serialize(o.bool_1, ref bytes);
+    Serializer.Serialize(o.string_1, ref bytes);
+    Serializer.Serialize(o.vector3_1, ref bytes);
+    Serializer.Serialize(o.vector3_2, ref bytes);
+    Serializer.Serialize(o.quaternion_1, ref bytes);
+
+    return bytes;
+}
 ```
 
+Third, create new custom type in "Deserialize" method and declare offset variable with type of int and intialize it with 0.
 
-.
+```csharp
+public static object Deserialize(byte[] bytes)
+{
+    TestStruct o = new TestStruct();
+    int offset = 0;
+}
+```
+
+Now, use Serializer's deserialize method to deserialize the fields which are serialized above. Offset is passed with ref keyword and return the custom type created above. 
+
+**Note that the order of deserializing must be same as the order of serializing.**
+
+```csharp
+public static object Deserialize(byte[] bytes)
+{
+	...
+    o.int_1 = Serializer.DeserializeInt(bytes, ref offset);
+    o.int_2 = Serializer.DeserializeInt(bytes, ref offset);
+    o.float_1 = Serializer.DeserializeInt(bytes, ref offset);
+    o.bool_1 = Serializer.DeserializeBool(bytes, ref offset);
+    o.string_1 = Serializer.DeserializeString(bytes, ref offset);
+    o.vector3_1 = Serializer.DeserializeVector3(bytes, ref offset);
+    o.vector3_2 = Serializer.DeserializeVector3(bytes, ref offset);
+    o.quaternion_1 = Serializer.DeserializeQuaternion(bytes, ref offset);
+
+    return o;
+}
+```
+Last, the custom type should be registered to PUN2. Call the method described below once to register the custom type.  If registering multiple custom types is needed, the byte code must be different. Simply achieved by changing alphabets in the method.
+
+```csharp
+Serializer.RegisterCustomType<TestStruct>((byte)'A');
+```
+
+### 3. Result
+The result of serializtion of given structure is as follows:
+
+|   |  size(bytes) |
+| ------------ | ------------ |
+| Original | 64 bytes  |
+|  Custom Serializer | 69 bytes  |
+
+The theoretical size is 64 bytes where the actual serialized size is 69 bytes. The difference of 5 bytes is caused by string, which can be sized variably by length of the string. The result is acceptable.
+
+# VI. Conclusion
+The custom serializer provides a smaller size rather than Binary Formatter or JsonUtility serializing. However, there are limitations that it can be inconvenient to have wirte all serialize methods for every custom types which are desired to be serialized. Nevertherless, if serializing custom types and sending to the network frequently, this custom serializer would help.
