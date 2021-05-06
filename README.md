@@ -168,7 +168,7 @@ TestStruct testStruct = new TestStruct
 };
 ```
 
-First,  create static methods with the names "Serialize" and "Deserialize". "Serialize" method has one parameter with type of object and return type with type of byte[]. "Deserialize" method has one parameter with type of byte[] and return type of object.
+First,  create static methods with the names **"Serialize" and "Deserialize" inside of custom type**. "Serialize" method has one parameter with type of object and return type with type of byte[]. "Deserialize" method has one parameter with type of byte[] and return type of object.
 
 Note that the names of the methods, parameters and return types must be same as described. **In addition, these methods must be static.**
 
