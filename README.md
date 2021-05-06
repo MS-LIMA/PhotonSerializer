@@ -34,14 +34,14 @@ TestStruct testStruct = new TestStruct
 Serializing the structure and measuring size of it are as follows:
 
 ```csharp
-    public void BinaryFormatterSerialize(TestStruct2 testStruct2)
+    public void BinaryFormatterSerialize(TestStruct testStruct)
     {
         byte[] bytes;
 
         MemoryStream memoryStream = new MemoryStream();
         BinaryFormatter binaryFormatter = new BinaryFormatter();
 
-        binaryFormatter.Serialize(memoryStream, testStruct2);
+        binaryFormatter.Serialize(memoryStream, testStruct);
 
         memoryStream.Close();
         bytes = memoryStream.ToArray();
@@ -50,7 +50,7 @@ Serializing the structure and measuring size of it are as follows:
     }
 ```
 ```csharp
-    public void CheckSize(TestStruct2 testStruct)
+    public void CheckSize(TestStruct testStruct)
     {
         Debug.Log(string.Format("Original Size : {0} bytes", Marshal.SizeOf(testStruct)));
         Debug.Log(JsonUtility.ToJson(testStruct, true));
