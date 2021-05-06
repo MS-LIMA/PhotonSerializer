@@ -72,9 +72,9 @@ The theoretical size of given structure is 24 bytes. When the given structure is
 Given structure above will be serialized with JsonUtility and coverted to bytes. Serializing the structure is as follows:
 
 ```csharp
-    public void JsonSerialize(TestStruct2 testStruct2)
+    public void JsonSerialize(TestStruct testStruct)
     {
-        byte[] bytes = Encoding.UTF8.GetBytes(JsonUtility.ToJson(testStruct2));
+        byte[] bytes = Encoding.UTF8.GetBytes(JsonUtility.ToJson(testStruct));
         Debug.Log(string.Format("Bianary Formatter Serialized Size : {0} bytes", bytes.Length));
     }
 ```
