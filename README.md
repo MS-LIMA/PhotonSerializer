@@ -7,7 +7,7 @@ This paper provides custom type registering method with script and compares the 
 
 # II. Serialize with Binary Formatter
 ### 1. Serialize and Measure the Size
-Given structure will be serialized with Binary Formatter and the size will be measured by Marshal. Note that unity objects such as Vector3, Quaternion and etc are not included since those cannot be serialized by Binary Formatter.
+Given structure will be serialized with Binary Formatter and the size will be measured by Marshal. Note that Unity objects such as Vector3, Quaternion and etc are not included since those cannot be serialized by Binary Formatter.
 
 ```csharp
 public struct TestStruct
@@ -67,7 +67,7 @@ The result is as follows:
 
 The theoretical size of given structure is 24 bytes. When the given structure is serialized with Binary Formatter, the size is 199 bytes which is 8 times larger than the theoretical size. This may lead to traffic overhead when serializing and sending it to the network.
 
-# II. Serialize with JsonUtility
+# III. Serialize with JsonUtility
 ### 1. Serialize 
 Given structure above will be serialized with JsonUtility and coverted to bytes. Serializing the structure is as follows:
 
@@ -117,7 +117,7 @@ TestStruct testStruct = new TestStruct
 
 The size of bytes are reduced from 94 bytes to 67 bytes. However, it is still larger than the theoritical size of 24 bytes.
 
-# III. Serialize with Custom Serializer
+# VI. Serialize with Custom Serializer
 ### 1. Introduce
 This paper introduces custom serializer which can serialize custom type such as user defined structure or class. This serializer can provide a size that is close to the theoretical size. Serializable types and sizes are as follows:
 
@@ -264,5 +264,5 @@ The result of serializtion of given structure is as follows:
 
 The theoretical size is 64 bytes where the actual serialized size is 69 bytes. The difference of 5 bytes is caused by string, which can be sized variably by length of the string. The result is acceptable.
 
-# VI. Conclusion
+# V. Conclusion
 The custom serializer provides a smaller size rather than Binary Formatter or JsonUtility serializing. However, there are limitations that it can be inconvenient to have wirte all serialize methods for every custom types which are desired to be serialized and does not support nested types. Nevertherless, if serializing custom types and sending to the network frequently, this custom serializer would help.
