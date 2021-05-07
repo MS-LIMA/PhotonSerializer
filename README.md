@@ -23,38 +23,38 @@ public struct TestStruct
 
 TestStruct testStruct = new TestStruct
 {
-	int_1 = 30,
-	int_2 = 71,
-	string_1 = "ABC가나다",
-	float_1 = 0.162f,
-	float_2 = 62f,
+    int_1 = 30,
+    int_2 = 71,
+    string_1 = "ABC가나다",
+    float_1 = 0.162f,
+    float_2 = 62f,
 };
 
 ```
 Serializing the structure and measuring size of it are as follows:
 
 ```csharp
-    public void BinaryFormatterSerialize(TestStruct testStruct)
-    {
-        byte[] bytes;
+public void BinaryFormatterSerialize(TestStruct testStruct)
+{
+    byte[] bytes;
 
-        MemoryStream memoryStream = new MemoryStream();
-        BinaryFormatter binaryFormatter = new BinaryFormatter();
+    MemoryStream memoryStream = new MemoryStream();
+    BinaryFormatter binaryFormatter = new BinaryFormatter();
 
-        binaryFormatter.Serialize(memoryStream, testStruct);
+    binaryFormatter.Serialize(memoryStream, testStruct);
 
-        memoryStream.Close();
-        bytes = memoryStream.ToArray();
+    memoryStream.Close();
+    bytes = memoryStream.ToArray();
 
-        Debug.Log(string.Format("Bianary Formatter Serialized Size : {0} bytes", bytes.Length));
-    }
+    Debug.Log(string.Format("Bianary Formatter Serialized Size : {0} bytes", bytes.Length));
+}
 ```
 ```csharp
-    public void CheckSize(TestStruct testStruct)
-    {
-        Debug.Log(string.Format("Original Size : {0} bytes", Marshal.SizeOf(testStruct)));
-        Debug.Log(JsonUtility.ToJson(testStruct, true));
-    }
+public void CheckSize(TestStruct testStruct)
+{
+    Debug.Log(string.Format("Original Size : {0} bytes", Marshal.SizeOf(testStruct)));
+    Debug.Log(JsonUtility.ToJson(testStruct, true));
+}
 ```
 
 ### 2. Result
@@ -72,11 +72,11 @@ The theoretical size of given structure is 24 bytes. When the given structure is
 Given structure above will be serialized with JsonUtility and coverted to bytes. Serializing the structure is as follows:
 
 ```csharp
-    public void JsonSerialize(TestStruct testStruct)
-    {
-        byte[] bytes = Encoding.UTF8.GetBytes(JsonUtility.ToJson(testStruct));
-        Debug.Log(string.Format("JsonUtility Serialized Size : {0} bytes", bytes.Length));
-    }
+public void JsonSerialize(TestStruct testStruct)
+{
+    byte[] bytes = Encoding.UTF8.GetBytes(JsonUtility.ToJson(testStruct));
+    Debug.Log(string.Format("JsonUtility Serialized Size : {0} bytes", bytes.Length));
+}
 ```
 
 ### 2. Result
@@ -164,14 +164,14 @@ public struct TestStruct
 
 TestStruct testStruct = new TestStruct
 {
-	int_1 = 30,
-	int_2 = 71,
-	float_1 = 0.162f,
-	bool_1 = true,
-	string_1 = "ABC가나다",
-	vector3_1 = new Vector3(-23f, 62f, 26f),
-	vector3_2 = new Vector3(1f, 7f, -15f),
-	quaternion_1 = Quaternion.Euler(35f, 0f, 15f)
+    int_1 = 30,
+    int_2 = 71,
+    float_1 = 0.162f,
+    bool_1 = true,
+    string_1 = "ABC가나다",
+    vector3_1 = new Vector3(-23f, 62f, 26f),
+    vector3_2 = new Vector3(1f, 7f, -15f),
+    quaternion_1 = Quaternion.Euler(35f, 0f, 15f)
 };
 ```
 
