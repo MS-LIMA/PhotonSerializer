@@ -75,7 +75,7 @@ Given structure above will be serialized with JsonUtility and coverted to bytes.
     public void JsonSerialize(TestStruct testStruct)
     {
         byte[] bytes = Encoding.UTF8.GetBytes(JsonUtility.ToJson(testStruct));
-        Debug.Log(string.Format("Bianary Formatter Serialized Size : {0} bytes", bytes.Length));
+        Debug.Log(string.Format("JsonUtility Serialized Size : {0} bytes", bytes.Length));
     }
 ```
 
