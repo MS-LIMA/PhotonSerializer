@@ -248,7 +248,7 @@ public static object Deserialize(byte[] bytes)
     return o;
 }
 ```
-Last, the custom type should be registered to PUN2. Call the method described below once to register the custom type.  If registering multiple custom types is needed, the byte code must be different. Simply achieved by changing alphabets in the method.
+Last, the custom type should be registered to PUN2. Call the method described below once to register the custom type.  If registering multiple custom types is needed, the byte code must be different. Simply achieved by changing the alphabet of the parameter in the method.
 
 ```csharp
 Serializer.RegisterCustomType<TestStruct>((byte)'A');
@@ -262,7 +262,7 @@ The result of serializtion of given structure is as follows:
 | Original | 64 bytes  |
 |  Custom Serializer | 69 bytes  |
 
-The theoretical size is 64 bytes where the actual serialized size is 69 bytes. The difference of 5 bytes is caused by string, which can be sized variably by length of the string. The result is acceptable.
+The theoretical size is 64 bytes where the actual serialized size is 69 bytes. The difference of 5 bytes is caused by string, which can be sized variably by the length. The result is acceptable.
 
 # V. Conclusion
-The custom serializer provides a smaller size rather than Binary Formatter or JsonUtility serializing. However, there are limitations that it can be inconvenient to have wirte all serialize methods for every custom types which are desired to be serialized and does not support nested types. Nevertherless, if serializing custom types and sending to the network frequently, this custom serializer would help.
+The custom serializer provides a smaller size rather than Binary Formatter or JsonUtility serializing. However, there are limitations that it can be inconvenient to have wirte all serialize methods for every custom types which are supposed to be serialized and does not support nested types. Nevertherless, if serializing custom types and sending to the network frequently, this custom serializer would help.
