@@ -90,7 +90,7 @@ The result is as follows:
 When the given structure is serialized with JsonUtility and converted to bytes, the size is 94 bytes which is about 4 times larger than the theoretical size. This size can be reduced by shortening the names of the variables. For instance, when the names of variables are changed as shown below, the result is as follows.
 
 ```csharp
-public struct TestStruct2
+public struct TestStruct
 {
     public int a;
     public int b;
