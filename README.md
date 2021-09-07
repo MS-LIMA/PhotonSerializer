@@ -117,7 +117,7 @@ TestStruct testStruct = new TestStruct
 
 The size of bytes are reduced from 94 bytes to 67 bytes. However, it is still larger than the theoritical size of 24 bytes.
 
-# VI. Serialize with Custom Serializer
+# IV. Serialize with Custom Serializer
 ### 1. Introduce
 This archive introduces custom serializer which can serialize custom type such as user defined structure or class. This serializer can provide a size that is close to the theoretical size. Serializable types and sizes are as follows:
 
