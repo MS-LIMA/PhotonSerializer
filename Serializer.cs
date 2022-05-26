@@ -211,7 +211,7 @@ namespace MSLIMA.Serializer
 
         public static void Serialize(int[] values, ref byte[] bytes)
         {
-            var length = values?.Length ?? 0;
+            var length = values == null ? 0 : values.Length;
             if (length > 0)
             {
                 Serialize(length, ref bytes);
@@ -228,7 +228,7 @@ namespace MSLIMA.Serializer
 
         public static void Serialize(float[] values, ref byte[] bytes)
         {
-            var length = values?.Length ?? 0;
+            var length = values == null ? 0 : values.Length;
             if (length > 0)
             {
                 Serialize(length, ref bytes);
@@ -245,7 +245,7 @@ namespace MSLIMA.Serializer
 
         public static void Serialize(bool[] values, ref byte[] bytes)
         {
-            var length = values?.Length ?? 0;
+            var length = values == null ? 0 : values.Length;
             if (length > 0)
             {
                 Serialize(length, ref bytes);
@@ -262,7 +262,7 @@ namespace MSLIMA.Serializer
 
         public static void Serialize(Vector2[] values, ref byte[] bytes)
         {
-            var length = values?.Length ?? 0;
+            var length = values == null ? 0 : values.Length;
             if (length > 0)
             {
                 Serialize(length, ref bytes);
@@ -279,7 +279,7 @@ namespace MSLIMA.Serializer
 
         public static void Serialize(Vector3[] values, ref byte[] bytes)
         {
-            var length = values?.Length ?? 0;
+            var length = values == null ? 0 : values.Length;
             if (length > 0)
             {
                 Serialize(length, ref bytes);
@@ -296,7 +296,7 @@ namespace MSLIMA.Serializer
 
         public static void Serialize(Quaternion[] values, ref byte[] bytes)
         {
-            var length = values?.Length ?? 0;
+            var length = values == null ? 0 : values.Length;
             if (length > 0)
             {
                 Serialize(length, ref bytes);
@@ -313,7 +313,7 @@ namespace MSLIMA.Serializer
 
         public static void Serialize(string[] values, ref byte[] bytes)
         {
-            var length = values?.Length ?? 0;
+            var length = values == null ? 0 : values.Length;
             if (length > 0)
             {
                 Serialize(length, ref bytes);
