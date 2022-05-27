@@ -11,20 +11,21 @@ namespace MSLIMA.Serializer
     {
         public static void RegisterCustomType<T>(byte code)
         {
-            Type type = typeof(T);
+            var type = typeof(T);
 
-            MethodInfo[] methodInfos = type.GetMethods();
+            var methodInfos = type.GetMethods();
 
             Func<object, byte[]> serializeMethod = null;
             Func<byte[], object> deserializeMethod = null;
 
-            foreach (MethodInfo methodInfo in methodInfos)
+            foreach (var methodInfo in methodInfos)
             {
                 if (methodInfo.Name == "Serialize")
                 {
                     if (!methodInfo.IsStatic)
                     {
-                        Debug.LogError(string.Format("Serialize method must be static! Registering custom type \"{0}\" failed.", type.ToString()));
+                        Debug.LogError(
+                            $"Serialize method must be static! Registering custom type \"{type.ToString()}\" failed.");
                         return;
                     }
 
@@ -34,7 +35,8 @@ namespace MSLIMA.Serializer
                 {
                     if (!methodInfo.IsStatic)
                     {
-                        Debug.LogError(string.Format("Deserialize method must be static! Registering custom type \"{0}\" failed.", type.ToString()));
+                        Debug.LogError(
+                            $"Deserialize method must be static! Registering custom type \"{type.ToString()}\" failed.");
                         return;
                     }
 
@@ -44,13 +46,13 @@ namespace MSLIMA.Serializer
 
             if (serializeMethod == null)
             {
-                Debug.LogError(string.Format("There is no serialize method! Registering custom type \"{0}\" failed.", type.ToString()));
+                Debug.LogError($"There is no serialize method! Registering custom type \"{type.ToString()}\" failed.");
                 return;
             }
 
             if (deserializeMethod == null)
             {
-                Debug.LogError(string.Format("There is no serialize method! Registering custom type \"{0}\" failed.", type.ToString()));
+                Debug.LogError($"There is no serialize method! Registering custom type \"{type.ToString()}\" failed.");
                 return;
             }
 
@@ -64,10 +66,10 @@ namespace MSLIMA.Serializer
 
         public static byte[] JoinBytes(params byte[][] bytes)
         {
-            byte[] rv = new byte[bytes.Sum(x => x.Length)];
-            int offset = 0;
+            var rv = new byte[bytes.Sum(x => x.Length)];
+            var offset = 0;
 
-            for (int i = 0; i < bytes.Length; i++)
+            for (var i = 0; i < bytes.Length; i++)
             {
                 bytes[i].CopyTo(rv, offset);
                 offset += bytes[i].Length;
@@ -83,7 +85,7 @@ namespace MSLIMA.Serializer
 
         public static void JoinBytes(ref byte[] bytesArray, params byte[][] joinBytes)
         {
-            for (int i = 0; i < joinBytes.Length; i++)
+            for (var i = 0; i < joinBytes.Length; i++)
             {
                 bytesArray = bytesArray.Concat(joinBytes[i]).ToArray();
             }
@@ -92,7 +94,7 @@ namespace MSLIMA.Serializer
         #region Serialize
         public static void Serialize(int value, ref byte[] bytes)
         {
-            byte[] _bytes = BitConverter.GetBytes(value);
+            var _bytes = BitConverter.GetBytes(value);
             if (BitConverter.IsLittleEndian)
                 Array.Reverse(_bytes);
 
@@ -101,16 +103,36 @@ namespace MSLIMA.Serializer
 
         public static void Serialize(float value, ref byte[] bytes)
         {
-            byte[] _bytes = BitConverter.GetBytes(value);
+            var _bytes = BitConverter.GetBytes(value);
             if (BitConverter.IsLittleEndian)
                 Array.Reverse(_bytes);
 
             JoinBytes(ref bytes, _bytes);
         }
+        
+        public static void Serialize(byte[] value, ref byte[] bytes)
+        {
+            var length = value?.Length ?? 0;
+            if (length > 0)
+            {
+                Serialize(length, ref bytes);
+                JoinBytes(ref bytes, value);
+            }
+            else
+            {
+                Serialize(0, ref bytes);
+            }
+        }
+        
+        public static void Serialize(byte value, ref byte[] bytes)
+        {
+            var _bytes = new byte[] {value};
+            JoinBytes(ref bytes, _bytes);
+        }
 
         public static void Serialize(bool value, ref byte[] bytes)
         {
-            byte[] _bytes = BitConverter.GetBytes(value);
+            var _bytes = BitConverter.GetBytes(value);
             if (BitConverter.IsLittleEndian)
                 Array.Reverse(_bytes);
 
@@ -119,15 +141,15 @@ namespace MSLIMA.Serializer
 
         public static void Serialize(Vector3 value, ref byte[] bytes)
         {
-            byte[] x = BitConverter.GetBytes(value.x);
+            var x = BitConverter.GetBytes(value.x);
             if (BitConverter.IsLittleEndian)
                 Array.Reverse(x);
 
-            byte[] y = BitConverter.GetBytes(value.y);
+            var y = BitConverter.GetBytes(value.y);
             if (BitConverter.IsLittleEndian)
                 Array.Reverse(y);
 
-            byte[] z = BitConverter.GetBytes(value.z);
+            var z = BitConverter.GetBytes(value.z);
             if (BitConverter.IsLittleEndian)
                 Array.Reverse(z);
 
@@ -136,11 +158,11 @@ namespace MSLIMA.Serializer
 
         public static void Serialize(Vector2 value, ref byte[] bytes)
         {
-            byte[] x = BitConverter.GetBytes(value.x);
+            var x = BitConverter.GetBytes(value.x);
             if (BitConverter.IsLittleEndian)
                 Array.Reverse(x);
 
-            byte[] y = BitConverter.GetBytes(value.y);
+            var y = BitConverter.GetBytes(value.y);
             if (BitConverter.IsLittleEndian)
                 Array.Reverse(y);
 
@@ -149,19 +171,19 @@ namespace MSLIMA.Serializer
 
         public static void Serialize(Quaternion value, ref byte[] bytes)
         {
-            byte[] x = BitConverter.GetBytes(value.x);
+            var x = BitConverter.GetBytes(value.x);
             if (BitConverter.IsLittleEndian)
                 Array.Reverse(x);
 
-            byte[] y = BitConverter.GetBytes(value.y);
+            var y = BitConverter.GetBytes(value.y);
             if (BitConverter.IsLittleEndian)
                 Array.Reverse(y);
 
-            byte[] z = BitConverter.GetBytes(value.z);
+            var z = BitConverter.GetBytes(value.z);
             if (BitConverter.IsLittleEndian)
                 Array.Reverse(z);
 
-            byte[] w = BitConverter.GetBytes(value.w);
+            var w = BitConverter.GetBytes(value.w);
             if (BitConverter.IsLittleEndian)
                 Array.Reverse(w);
 
@@ -176,11 +198,11 @@ namespace MSLIMA.Serializer
                 return;
             }
 
-            byte[] stringBytes = Encoding.UTF8.GetBytes(value);
+            var stringBytes = Encoding.UTF8.GetBytes(value);
             if (BitConverter.IsLittleEndian)
                 Array.Reverse(stringBytes);
 
-            byte[] lengthBytes = BitConverter.GetBytes(stringBytes.Length);
+            var lengthBytes = BitConverter.GetBytes(stringBytes.Length);
             if (BitConverter.IsLittleEndian)
                 Array.Reverse(lengthBytes);
 
@@ -189,11 +211,11 @@ namespace MSLIMA.Serializer
 
         public static void Serialize(int[] values, ref byte[] bytes)
         {
-            int length = values == null ? 0 : values.Length;
+            var length = values == null ? 0 : values.Length;
             if (length > 0)
             {
                 Serialize(length, ref bytes);
-                for (int i = 0; i < values.Length; i++)
+                for (var i = 0; i < values.Length; i++)
                 {
                     Serialize(values[i], ref bytes);
                 }
@@ -206,11 +228,11 @@ namespace MSLIMA.Serializer
 
         public static void Serialize(float[] values, ref byte[] bytes)
         {
-            int length = values == null ? 0 : values.Length;
+            var length = values == null ? 0 : values.Length;
             if (length > 0)
             {
                 Serialize(length, ref bytes);
-                for (int i = 0; i < values.Length; i++)
+                for (var i = 0; i < values.Length; i++)
                 {
                     Serialize(values[i], ref bytes);
                 }
@@ -223,11 +245,11 @@ namespace MSLIMA.Serializer
 
         public static void Serialize(bool[] values, ref byte[] bytes)
         {
-            int length = values == null ? 0 : values.Length;
+            var length = values == null ? 0 : values.Length;
             if (length > 0)
             {
                 Serialize(length, ref bytes);
-                for (int i = 0; i < values.Length; i++)
+                for (var i = 0; i < values.Length; i++)
                 {
                     Serialize(values[i], ref bytes);
                 }
@@ -240,11 +262,11 @@ namespace MSLIMA.Serializer
 
         public static void Serialize(Vector2[] values, ref byte[] bytes)
         {
-            int length = values == null ? 0 : values.Length;
+            var length = values == null ? 0 : values.Length;
             if (length > 0)
             {
                 Serialize(length, ref bytes);
-                for (int i = 0; i < values.Length; i++)
+                for (var i = 0; i < values.Length; i++)
                 {
                     Serialize(values[i], ref bytes);
                 }
@@ -257,11 +279,11 @@ namespace MSLIMA.Serializer
 
         public static void Serialize(Vector3[] values, ref byte[] bytes)
         {
-            int length = values == null ? 0 : values.Length;
+            var length = values == null ? 0 : values.Length;
             if (length > 0)
             {
                 Serialize(length, ref bytes);
-                for (int i = 0; i < values.Length; i++)
+                for (var i = 0; i < values.Length; i++)
                 {
                     Serialize(values[i], ref bytes);
                 }
@@ -274,11 +296,11 @@ namespace MSLIMA.Serializer
 
         public static void Serialize(Quaternion[] values, ref byte[] bytes)
         {
-            int length = values == null ? 0 : values.Length;
+            var length = values == null ? 0 : values.Length;
             if (length > 0)
             {
                 Serialize(length, ref bytes);
-                for (int i = 0; i < values.Length; i++)
+                for (var i = 0; i < values.Length; i++)
                 {
                     Serialize(values[i], ref bytes);
                 }
@@ -291,11 +313,11 @@ namespace MSLIMA.Serializer
 
         public static void Serialize(string[] values, ref byte[] bytes)
         {
-            int length = values == null ? 0 : values.Length;
+            var length = values == null ? 0 : values.Length;
             if (length > 0)
             {
                 Serialize(length, ref bytes);
-                for (int i = 0; i < values.Length; i++)
+                for (var i = 0; i < values.Length; i++)
                 {
                     Serialize(values[i], ref bytes);
                 }
@@ -310,7 +332,7 @@ namespace MSLIMA.Serializer
         #region Deserialize
         public static int DeserializeInt(byte[] bytes, ref int offset)
         {
-            byte[] _bytes = new byte[4];
+            var _bytes = new byte[4];
             Array.Copy(bytes, offset, _bytes, 0, 4);
 
             if (BitConverter.IsLittleEndian)
@@ -322,9 +344,34 @@ namespace MSLIMA.Serializer
             // int, float, bool vecot3, ve2 ,qua, string
         }
 
+        public static byte DeserializeByte(byte[] bytes, ref int offset)
+        {
+            var _byte = bytes[offset];
+
+            offset += 1;
+            return _byte;
+        }
+
+        public static byte[] DeserializeByteArray(byte[] bytes, ref int offset)
+        {
+            var length = DeserializeInt(bytes, ref offset);
+            if (length > 0)
+            {
+                var array = new byte[length];
+                for (var i = 0; i < array.Length; i++)
+                {
+                    array[i] = DeserializeByte(bytes, ref offset);
+                }
+
+                return array;
+            }
+
+            return new byte[0];
+        }
+
         public static float DeserializeFloat(byte[] bytes, ref int offset)
         {
-            byte[] _bytes = new byte[4];
+            var _bytes = new byte[4];
             Array.Copy(bytes, offset, _bytes, 0, 4);
 
             if (BitConverter.IsLittleEndian)
@@ -336,7 +383,7 @@ namespace MSLIMA.Serializer
 
         public static bool DeserializeBool(byte[] bytes, ref int offset)
         {
-            byte[] _bytes = new byte[1];
+            var _bytes = new byte[1];
             Array.Copy(bytes, offset, _bytes, 0, 1);
 
             if (BitConverter.IsLittleEndian)
@@ -348,9 +395,9 @@ namespace MSLIMA.Serializer
 
         public static Vector3 DeserializeVector3(byte[] bytes, ref int offset)
         {
-            byte[] _xBytes = new byte[4];
-            byte[] _yBytes = new byte[4];
-            byte[] _zBytes = new byte[4];
+            var _xBytes = new byte[4];
+            var _yBytes = new byte[4];
+            var _zBytes = new byte[4];
 
             Array.Copy(bytes, offset, _xBytes, 0, 4);
             Array.Copy(bytes, offset + 4, _yBytes, 0, 4);
@@ -363,10 +410,12 @@ namespace MSLIMA.Serializer
                 Array.Reverse(_zBytes);
             }
 
-            Vector3 o = new Vector3();
-            o.x = BitConverter.ToSingle(_xBytes, 0);
-            o.y = BitConverter.ToSingle(_yBytes, 0);
-            o.z = BitConverter.ToSingle(_zBytes, 0);
+            var o = new Vector3
+            {
+                x = BitConverter.ToSingle(_xBytes, 0),
+                y = BitConverter.ToSingle(_yBytes, 0),
+                z = BitConverter.ToSingle(_zBytes, 0)
+            };
 
             offset += 12;
             return o;
@@ -374,8 +423,8 @@ namespace MSLIMA.Serializer
 
         public static Vector2 DeserializeVector2(byte[] bytes, ref int offset)
         {
-            byte[] _xBytes = new byte[4];
-            byte[] _yBytes = new byte[4];
+            var _xBytes = new byte[4];
+            var _yBytes = new byte[4];
 
             Array.Copy(bytes, offset, _xBytes, 0, 4);
             Array.Copy(bytes, offset + 4, _yBytes, 0, 4);
@@ -386,9 +435,11 @@ namespace MSLIMA.Serializer
                 Array.Reverse(_yBytes);
             }
 
-            Vector2 o = new Vector2();
-            o.x = BitConverter.ToSingle(_xBytes, 0);
-            o.y = BitConverter.ToSingle(_yBytes, 0);
+            var o = new Vector2
+            {
+                x = BitConverter.ToSingle(_xBytes, 0),
+                y = BitConverter.ToSingle(_yBytes, 0)
+            };
 
             offset += 8;
             return o;
@@ -396,10 +447,10 @@ namespace MSLIMA.Serializer
 
         public static Quaternion DeserializeQuaternion(byte[] bytes, ref int offset)
         {
-            byte[] _xBytes = new byte[4];
-            byte[] _yBytes = new byte[4];
-            byte[] _zBytes = new byte[4];
-            byte[] _wBytes = new byte[4];
+            var _xBytes = new byte[4];
+            var _yBytes = new byte[4];
+            var _zBytes = new byte[4];
+            var _wBytes = new byte[4];
 
             Array.Copy(bytes, offset, _xBytes, 0, 4);
             Array.Copy(bytes, offset + 4, _yBytes, 0, 4);
@@ -414,11 +465,13 @@ namespace MSLIMA.Serializer
                 Array.Reverse(_wBytes);
             }
 
-            Quaternion o = new Quaternion();
-            o.x = BitConverter.ToSingle(_xBytes, 0);
-            o.y = BitConverter.ToSingle(_yBytes, 0);
-            o.z = BitConverter.ToSingle(_zBytes, 0);
-            o.w = BitConverter.ToSingle(_wBytes, 0);
+            var o = new Quaternion
+            {
+                x = BitConverter.ToSingle(_xBytes, 0),
+                y = BitConverter.ToSingle(_yBytes, 0),
+                z = BitConverter.ToSingle(_zBytes, 0),
+                w = BitConverter.ToSingle(_wBytes, 0)
+            };
 
             offset += 16;
             return o;
@@ -426,10 +479,10 @@ namespace MSLIMA.Serializer
 
         public static string DeserializeString(byte[] bytes, ref int offset)
         {
-            int length = DeserializeInt(bytes, ref offset);
+            var length = DeserializeInt(bytes, ref offset);
             if (length > 0)
             {
-                byte[] _bytes = new byte[length];
+                var _bytes = new byte[length];
                 Array.Copy(bytes, offset, _bytes, 0, length);
 
                 if (BitConverter.IsLittleEndian)
@@ -444,11 +497,11 @@ namespace MSLIMA.Serializer
 
         public static int[] DeserializeIntArray(byte[] bytes, ref int offset)
         {
-            int length = DeserializeInt(bytes, ref offset);
+            var length = DeserializeInt(bytes, ref offset);
             if (length > 0)
             {
-                int[] array = new int[length];
-                for (int i = 0; i < array.Length; i++)
+                var array = new int[length];
+                for (var i = 0; i < array.Length; i++)
                 {
                     array[i] = DeserializeInt(bytes, ref offset);
                 }
@@ -461,11 +514,11 @@ namespace MSLIMA.Serializer
 
         public static float[] DeserializeFloatArray(byte[] bytes, ref int offset)
         {
-            int length = DeserializeInt(bytes, ref offset);
+            var length = DeserializeInt(bytes, ref offset);
             if (length > 0)
             {
-                float[] array = new float[length];
-                for (int i = 0; i < array.Length; i++)
+                var array = new float[length];
+                for (var i = 0; i < array.Length; i++)
                 {
                     array[i] = DeserializeFloat(bytes, ref offset);
                 }
@@ -478,11 +531,11 @@ namespace MSLIMA.Serializer
 
         public static bool[] DeserializeBoolArray(byte[] bytes, ref int offset)
         {
-            int length = DeserializeInt(bytes, ref offset);
+            var length = DeserializeInt(bytes, ref offset);
             if (length > 0)
             {
-                bool[] array = new bool[length];
-                for (int i = 0; i < array.Length; i++)
+                var array = new bool[length];
+                for (var i = 0; i < array.Length; i++)
                 {
                     array[i] = DeserializeBool(bytes, ref offset);
                 }
@@ -495,11 +548,11 @@ namespace MSLIMA.Serializer
 
         public static Vector3[] DeserializeVector3Array(byte[] bytes, ref int offset)
         {
-            int length = DeserializeInt(bytes, ref offset);
+            var length = DeserializeInt(bytes, ref offset);
             if (length > 0)
             {
-                Vector3[] array = new Vector3[length];
-                for (int i = 0; i < array.Length; i++)
+                var array = new Vector3[length];
+                for (var i = 0; i < array.Length; i++)
                 {
                     array[i] = DeserializeVector3(bytes, ref offset);
                 }
@@ -512,11 +565,11 @@ namespace MSLIMA.Serializer
 
         public static Vector2[] DeserializeVector2Array(byte[] bytes, ref int offset)
         {
-            int length = DeserializeInt(bytes, ref offset);
+            var length = DeserializeInt(bytes, ref offset);
             if (length > 0)
             {
-                Vector2[] array = new Vector2[length];
-                for (int i = 0; i < array.Length; i++)
+                var array = new Vector2[length];
+                for (var i = 0; i < array.Length; i++)
                 {
                     array[i] = DeserializeVector2(bytes, ref offset);
                 }
@@ -529,11 +582,11 @@ namespace MSLIMA.Serializer
 
         public static Quaternion[] DeserializeQuaternionArray(byte[] bytes, ref int offset)
         {
-            int length = DeserializeInt(bytes, ref offset);
+            var length = DeserializeInt(bytes, ref offset);
             if (length > 0)
             {
-                Quaternion[] array = new Quaternion[length];
-                for (int i = 0; i < array.Length; i++)
+                var array = new Quaternion[length];
+                for (var i = 0; i < array.Length; i++)
                 {
                     array[i] = DeserializeQuaternion(bytes, ref offset);
                 }
@@ -546,11 +599,11 @@ namespace MSLIMA.Serializer
 
         public static string[] DeserializeStringArray(byte[] bytes, ref int offset)
         {
-            int length = DeserializeInt(bytes, ref offset);
+            var length = DeserializeInt(bytes, ref offset);
             if (length > 0)
             {
-                string[] array = new string[length];
-                for (int i = 0; i < array.Length; i++)
+                var array = new string[length];
+                for (var i = 0; i < array.Length; i++)
                 {
                     array[i] = DeserializeString(bytes, ref offset);
                 }
