@@ -123,7 +123,9 @@ This archive introduces custom serializer which can serialize custom type such a
 
 |  Type | Size(bytes)  |
 | ------------ | ------------ |
-|  bool | 1 bytes  |
+|  byte | 1 byte  |
+|  byte[] | 4 + (1 * Length) bytes  |
+|  bool | 1 byte  |
 |  bool[] | 4 + (1 * Length) bytes  |
 |  int | 4 bytes  |
 |  int[] | 4 + (4 * Length) bytes  |
