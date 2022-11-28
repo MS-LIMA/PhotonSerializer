@@ -1,0 +1,26 @@
+{
+  "name": "com.ms-lima.photonserializer",
+  "displayName": "Unity Photon Serializer",
+  "version": "0.3.0",
+  "unity": "2018.3",
+  "description": "This archive provides custom type registering method with script and compares the difference with other serialization methods.",
+  "author": {
+    "name": "MS-LIMA",
+    "url": "https://github.com/MS-LIMA"
+  },
+  "changelogUrl": "https://github.com/MS-LIMA/PhotonSerializer",
+  "documentationUrl": "https://github.com/MS-LIMA/PhotonSerializer#readme",
+  "license": "MIT",
+  "licensesUrl":"https://github.com/MS-LIMA/PhotonSerializer/blob/main/LICENSE",
+  "keywords": [
+    "networking",
+    "serialization"
+  ],
+  "samples": [
+    {
+      "displayName": "Default samples",
+      "description": "Contains test samples",
+      "path": "Samples~/Examples"
+    }
+  ]
+}
