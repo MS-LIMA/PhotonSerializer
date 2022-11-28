@@ -123,7 +123,9 @@ This archive introduces custom serializer which can serialize custom type such a
 
 |  Type | Size(bytes)  |
 | ------------ | ------------ |
-|  bool | 1 bytes  |
+|  byte | 1 byte  |
+|  byte[] | 4 + (1 * Length) bytes  |
+|  bool | 1 byte  |
 |  bool[] | 4 + (1 * Length) bytes  |
 |  int | 4 bytes  |
 |  int[] | 4 + (4 * Length) bytes  |
@@ -265,4 +267,4 @@ The result of serializtion of given structure is as follows:
 The theoretical size is 64 bytes where the actual serialized size is 69 bytes. The difference of 5 bytes is caused by string, which can be sized variably by the length. The result is acceptable.
 
 # V. Conclusion
-The custom serializer provides a smaller size rather than Binary Formatter or JsonUtility serializing. However, there are limitations that it can be inconvenient to have wirte all serialize methods for every custom types which are supposed to be serialized and does not support nested types. Nevertherless, if serializing custom types and sending to the network frequently, this custom serializer would help.
+The custom serializer provides a smaller size rather than Binary Formatter or JsonUtility serializing. However, there are limitations that it can be inconvenient to have wirte all serialize methods for every custom types which are supposed to be serialized and does not support nested types. Nevertherless, if serializing simple custom types with primitive types and sending it to the network frequently, this custom serializer would help.
