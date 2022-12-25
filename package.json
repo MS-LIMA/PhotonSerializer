@@ -1,7 +1,7 @@
 {
   "name": "com.ms-lima.photonserializer",
-  "displayName": "Unity Photon Serializer",
-  "version": "0.3.1",
+  "displayName": "Photon Serializer",
+  "version": "0.3.2",
   "unity": "2018.3",
   "description": "This archive provides custom type registering method with script and compares the difference with other serialization methods.",
   "author": {
