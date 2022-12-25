@@ -268,3 +268,20 @@ The theoretical size is 64 bytes where the actual serialized size is 69 bytes. T
 
 # V. Conclusion
 The custom serializer provides a smaller size rather than Binary Formatter or JsonUtility serializing. However, there are limitations that it can be inconvenient to have wirte all serialize methods for every custom types which are supposed to be serialized and does not support nested types. Nevertherless, if serializing simple custom types with primitive types and sending it to the network frequently, this custom serializer would help.
+
+## Install
+
+[![openupm](https://img.shields.io/npm/v/com.ms-lima.photonserializer?label=openupm&registry_uri=https://package.openupm.com)](https://openupm.com/packages/com.ms-lima.photonserializer/)
+
+Add scoped this registry.
+```json
+"scopedRegistries": [
+    {
+      "name": "MS-LIMA",
+      "url": "https://package.openupm.com",
+      "scopes": [
+        "com.ms-lima"
+      ]
+    }
+  ]
+```
